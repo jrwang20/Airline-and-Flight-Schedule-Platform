@@ -7,6 +7,7 @@ package UserInterface.agency;
 
 import buyer.Customer;
 import java.awt.CardLayout;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,8 +30,9 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
     JPanel userProcessContainer;
     Customer customer = null;
     Flight flight = null;
-    Ticket ticket = null;
-    
+    Ticket ticket = null;    
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+
     public BuyTicketJPanel(TravelAgency travelAgency, JPanel userProcessContainer) {
         initComponents();
         this.travelAgency = travelAgency;
@@ -44,12 +46,13 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
         dtm.setRowCount(0);
         
         for(Customer customer : travelAgency.getOffice().getCustomerDirectory().getCustomerList()) {
-            Object[] row = new Object[5];
+            Object[] row = new Object[6];
             row[0] = customer;
             row[1] = customer.getFromCity();
             row[2] = customer.getToCity();
-            row[3] = customer.getTime();
-            row[4] = customer.getMaxPrice();
+            row[3] = sdf.format(customer.getDate());
+            row[4] = customer.getTime();
+            row[5] = customer.getMaxPrice();
             
             dtm.addRow(row);
         }
@@ -61,13 +64,14 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
         dtm.setRowCount(0);
         
         for(Flight flight : flightList) {
-            Object[] row = new Object[6];
+            Object[] row = new Object[7];
             row[0] = flight;
             row[1] = flight.getFromCity();
             row[2] = flight.getToCity();
-            row[3] = flight.getTime();
-            row[4] = flight.getPrice();
-            row[5] = flight.isAvailable() ? "Available" : "Not Available";
+            row[3] = sdf.format(flight.getDate());
+            row[4] = flight.getTime();
+            row[5] = flight.getPrice();
+            row[6] = flight.isAvailable() ? "Available" : "Not Available";
             
             dtm.addRow(row);
         }
@@ -100,13 +104,13 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
 
         tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Customer", "From", "To", "Time", "Money"
+                "Customer", "From", "To", "Date", "Time", "Buget"
             }
         ));
         jScrollPane1.setViewportView(tblCustomer);
@@ -123,16 +127,19 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
 
         tblFlight.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Flight", "From", "To", "Time", "Price", "isAvailable"
+                "Flight", "From", "To", "Date", "Time", "Price", "isAvailable"
             }
         ));
         jScrollPane2.setViewportView(tblFlight);
+        if (tblFlight.getColumnModel().getColumnCount() > 0) {
+            tblFlight.getColumnModel().getColumn(0).setPreferredWidth(150);
+        }
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel2.setText("Customized Flight List");
@@ -157,9 +164,9 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel4.setText("Second Step:");
 
-        jLabel5.setText("seat");
+        jLabel5.setText("Seat Prefer:");
 
-        btnSeatTicket.setText("Buy Ticket with Seat");
+        btnSeatTicket.setText("Reserve Seat");
         btnSeatTicket.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSeatTicketActionPerformed(evt);
@@ -176,25 +183,23 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(79, 79, 79)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtSeat))
+                                .addComponent(txtSeat, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSeatTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(79, 79, 79)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnFlight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))))
                 .addContainerGap(52, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSeatTicket)
-                .addGap(39, 39, 39))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,22 +218,20 @@ public class BuyTicketJPanel extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnFlight, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)))
-                .addGap(9, 9, 9)
+                        .addGap(44, 44, 44)
+                        .addComponent(btnTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtSeat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSeatTicket)
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addComponent(txtSeat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSeatTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

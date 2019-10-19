@@ -1,5 +1,7 @@
 package service;
 
+import java.util.Date;
+
 public class Flight {
 
     private final String flightId;
@@ -8,6 +10,7 @@ public class Flight {
     private String fromCity;
     private String toCity;
     private String time;
+    private Date date;
     private int price;
 
     private boolean isAvailable;
@@ -17,11 +20,12 @@ public class Flight {
         this.airlinerName = airlinerName;
     }
 
-    public Flight(String flightId, String airlinerName, String fromCity, String toCity, String time, int price, boolean isAvailable) {
+    public Flight(String flightId, String airlinerName, String fromCity, String toCity, Date date, String time, int price, boolean isAvailable) {
         this.flightId = flightId;
         this.airlinerName = airlinerName;
         this.fromCity = fromCity;
         this.toCity = toCity;
+        this.date = date;
         this.time = time;
         this.price = price;
         this.isAvailable = isAvailable;
@@ -74,6 +78,16 @@ public class Flight {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    
+    
     
     @Override
     public String toString() {

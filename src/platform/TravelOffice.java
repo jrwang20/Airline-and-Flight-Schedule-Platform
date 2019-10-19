@@ -2,6 +2,7 @@ package platform;
 
 import buyer.Customer;
 import buyer.CustomerDirectory;
+import java.util.Date;
 import service.Flight;
 
 import java.util.HashMap;
@@ -59,10 +60,11 @@ public class TravelOffice {
 
         String fromCity = customer.getFromCity();
         String toCity = customer.getToCity();
+        Date date = customer.getDate();
         String time = customer.getTime();
         int maxPrice = customer.getMaxPrice();
 
-        List<Flight> res = master.multipleFilter(fromCity, toCity, time, maxPrice);
+        List<Flight> res = master.multipleFilter(fromCity, toCity, date, time, maxPrice);
 
         return res;
 
@@ -73,9 +75,9 @@ public class TravelOffice {
      * @param
      * @return
      */
-    public List<Flight> getCustomizedFlightList(String from, String to, String time, int price) {
+    public List<Flight> getCustomizedFlightList(String from, String to, Date date, String time, int price) {
         
-        List<Flight> res = master.multipleFilter(from, to, time, price);
+        List<Flight> res = master.multipleFilter(from, to, date, time, price);
 
         return res;
 

@@ -1,5 +1,7 @@
 package seller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import service.Flight;
 import service.FlightSchedule;
 import vo.FlightAirplane;
@@ -17,6 +19,8 @@ public class Airliner {
     private FlightSchedule schedule;
 
     private Set<FlightAirplane> flightAirplaneSet;
+    
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 
     /**
      * 如果是true的话，就说明当前airplane已经被assign到了当前航班上
@@ -37,7 +41,7 @@ public class Airliner {
         return airlinerName;
     }
 
-    public Airliner(String airlinerName, int price) {
+    public Airliner(String airlinerName, int price) throws ParseException {
 
         this.airlinerName = airlinerName;
 
@@ -45,12 +49,18 @@ public class Airliner {
 
         this.schedule = new FlightSchedule();
 
+        this.addAirplane(new Airplane(airlinerName + " - plane707"));
+        this.addAirplane(new Airplane(airlinerName + " - plane717"));
+        this.addAirplane(new Airplane(airlinerName + " - plane727"));
         this.addAirplane(new Airplane(airlinerName + " - plane737"));
         this.addAirplane(new Airplane(airlinerName + " - plane747"));
         this.addAirplane(new Airplane(airlinerName + " - plane757"));
         this.addAirplane(new Airplane(airlinerName + " - plane767"));
+        this.addAirplane(new Airplane(airlinerName + " - plane777"));
+        this.addAirplane(new Airplane(airlinerName + " - plane787"));
+        this.addAirplane(new Airplane(airlinerName + " - plane797"));
 
-        this.addFlightToSchedule(new Flight(airlinerName + " - Flight001", airlinerName, "BOS", "LAX", "morning", price, true));
+        this.addFlightToSchedule(new Flight(airlinerName + " - Flight001", airlinerName, "BOS", "LAX", sdf.parse("2020-01-01") , "morning", price, true));
 
         flightAirplaneSet = new HashSet<>();
 

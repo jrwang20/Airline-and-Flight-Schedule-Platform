@@ -7,7 +7,11 @@ package UserInterface.agency;
 
 import UserInterface.customer.CustomerJPanel;
 import java.awt.CardLayout;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +31,7 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
     
     TravelAgency travelAgency;
     JPanel userProcessContainer;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
     
     public TravelAgencyJPanel(TravelAgency travelAgency, JPanel userProcessContainer) {
         initComponents();
@@ -41,13 +46,14 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
         dtm.setRowCount(0);
         
         for(Flight flight : this.travelAgency.getAllAvailableFlight()) {
-            Object[] row = new Object[6];
+            Object[] row = new Object[7];
             row[0] = flight;
             row[1] = flight.getFromCity();
             row[2] = flight.getToCity();
-            row[3] = flight.getTime();
-            row[4] = flight.getPrice();
-            row[5] = flight.isAvailable() ? "Available" : "Not Available";
+            row[3] = sdf.format(flight.getDate());
+            row[4] = flight.getTime();
+            row[5] = flight.getPrice();
+            row[6] = flight.isAvailable() ? "Available" : "Not Available";
             
             dtm.addRow(row);
         }
@@ -58,13 +64,14 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
         dtm.setRowCount(0);
         
         for(Flight flight : flightList) {
-            Object[] row = new Object[6];
+            Object[] row = new Object[7];
             row[0] = flight;
             row[1] = flight.getFromCity();
             row[2] = flight.getToCity();
-            row[3] = flight.getTime();
-            row[4] = flight.getPrice();
-            row[5] = flight.isAvailable() ? "Available" : "Not Available";
+            row[3] = sdf.format(flight.getDate());
+            row[4] = flight.getTime();
+            row[5] = flight.getPrice();
+            row[6] = flight.isAvailable() ? "Available" : "Not Available";
             
             dtm.addRow(row);
         }
@@ -94,21 +101,24 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
         txtPrice = new javax.swing.JTextField();
         btnBuy = new javax.swing.JButton();
         btnSignIn = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        txtDate = new javax.swing.JTextField();
 
         tblFlight.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Flight", "From", "To", "Time", "Price", "isAvailable"
+                "Flight", "From", "To", "Date", "Time", "Price", "isAvailable"
             }
         ));
         jScrollPane1.setViewportView(tblFlight);
         if (tblFlight.getColumnModel().getColumnCount() > 0) {
             tblFlight.getColumnModel().getColumn(0).setPreferredWidth(150);
+            tblFlight.getColumnModel().getColumn(3).setPreferredWidth(120);
         }
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
@@ -147,38 +157,48 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        jLabel6.setText("Date");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(41, 41, 41)
+                                .addComponent(txtDate))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addGap(36, 36, 36)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtFrom)
+                                    .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(36, 36, 36)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTime)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(39, 39, 39)
-                                .addComponent(txtPrice))
-                            .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
-                        .addGap(178, 178, 178)
-                        .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)))
+                        .addGap(201, 201, 201)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtFrom, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                            .addComponent(txtTo)
-                            .addComponent(txtTime))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSignIn, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(163, Short.MAX_VALUE))
+                            .addComponent(btnSignIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuy, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,17 +207,21 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(txtFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(11, 11, 11)
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -208,11 +232,10 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(btnSignIn, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(35, 35, 35)
                         .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -246,13 +269,26 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
             }
         }
         
+        String date = txtDate.getText();
+        if(date.equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter date");
+            return;
+        }
+        
         String time = txtTime.getText();
         if(time.equals("")) {
             JOptionPane.showMessageDialog(null, "Enter time");
             return;
         }
         
-        List<Flight> customizedFlightList = this.travelAgency.getOffice().getCustomizedFlightList(from, to, time, price);
+        List<Flight> customizedFlightList = null;
+        try {
+            customizedFlightList = this.travelAgency.getOffice().getCustomizedFlightList(from, to, sdf.parse(date), time, price);
+        } catch (ParseException ex) {
+            Logger.getLogger(TravelAgencyJPanel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Wrong Format with the Date, please: yyyy-mm-dd");
+            return;
+        }
         
         populateCustomizedTable(customizedFlightList);
         
@@ -291,8 +327,10 @@ public class TravelAgencyJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblFlight;
+    private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtFrom;
     private javax.swing.JTextField txtPrice;
     private javax.swing.JTextField txtTime;

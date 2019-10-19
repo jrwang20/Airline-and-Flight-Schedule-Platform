@@ -6,6 +6,7 @@
 package UserInterface.agency;
 
 import buyer.Customer;
+import java.text.SimpleDateFormat;
 import javax.swing.JPanel;
 import platform.TravelAgency;
 import seller.Seat;
@@ -24,7 +25,8 @@ public class ResultTicketJPanel extends javax.swing.JPanel {
     TravelAgency travelAgency;
     JPanel userProcessContainer;
     Ticket ticket;
-    
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+
     
     public ResultTicketJPanel(TravelAgency travelAgency, Ticket ticket, JPanel userProcessContainer) {
         initComponents();
@@ -47,6 +49,7 @@ public class ResultTicketJPanel extends javax.swing.JPanel {
         lblFrom.setText(flight.getFromCity());
         lblTo.setText(flight.getToCity());
         lblTime.setText(flight.getTime());
+        lblDate.setText(sdf.format(flight.getDate()));
         lblSeat.setText(seat.getSeatId());
         
     }
@@ -75,6 +78,8 @@ public class ResultTicketJPanel extends javax.swing.JPanel {
         lblTo = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
         lblSeat = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        lblDate = new javax.swing.JLabel();
 
         jLabel1.setText("Ticket Info");
 
@@ -91,6 +96,8 @@ public class ResultTicketJPanel extends javax.swing.JPanel {
         jLabel7.setText("Time");
 
         jLabel8.setText("Seat");
+
+        jLabel9.setText("Date");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -114,13 +121,18 @@ public class ResultTicketJPanel extends javax.swing.JPanel {
                         .addGap(107, 107, 107)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblSeat)
-                            .addComponent(lblTime)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTime)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel9)
+                                .addGap(92, 92, 92)
+                                .addComponent(lblDate))
                             .addComponent(lblTo)
                             .addComponent(lblFrom)
                             .addComponent(lblPrice)
                             .addComponent(lblFlight)
                             .addComponent(lblCustomer))))
-                .addContainerGap(403, Short.MAX_VALUE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,7 +162,9 @@ public class ResultTicketJPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(lblTime))
+                    .addComponent(lblTime)
+                    .addComponent(jLabel9)
+                    .addComponent(lblDate))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -169,7 +183,9 @@ public class ResultTicketJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel lblCustomer;
+    private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblFlight;
     private javax.swing.JLabel lblFrom;
     private javax.swing.JLabel lblPrice;

@@ -7,6 +7,10 @@ package UserInterface.customer;
 
 import buyer.Customer;
 import java.awt.CardLayout;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +30,8 @@ public class CustomerJPanel extends javax.swing.JPanel {
     TravelAgency travelAgency;
     JPanel userProcessContainer;
     
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+    
     public CustomerJPanel(TravelAgency travelAgency, JPanel userProcessContainer) {
         initComponents();
         this.travelAgency = travelAgency;
@@ -39,12 +45,15 @@ public class CustomerJPanel extends javax.swing.JPanel {
         dtm.setRowCount(0);
         
         for(Customer customer : travelAgency.getOffice().getCustomerDirectory().getCustomerList()) {
-            Object[] row = new Object[5];
+            Object[] row = new Object[6];
             row[0] = customer;
             row[1] = customer.getFromCity();
             row[2] = customer.getToCity();
-            row[3] = customer.getTime();
-            row[4] = customer.getMaxPrice();
+            row[3] = sdf.format(customer.getDate());
+//            System.out.println(customer.getDate());
+//            System.out.println(row[3]);
+            row[4] = customer.getTime();
+            row[5] = customer.getMaxPrice();
             
             dtm.addRow(row);
         }
@@ -77,21 +86,26 @@ public class CustomerJPanel extends javax.swing.JPanel {
         txtMoney = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
+        txtDate = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         jButton1.setText("jButton1");
 
         tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Customer", "From", "To", "Time", "Money"
+                "Customer", "From", "To", "Date", "Time", "Budget"
             }
         ));
         jScrollPane1.setViewportView(tblCustomer);
+        if (tblCustomer.getColumnModel().getColumnCount() > 0) {
+            tblCustomer.getColumnModel().getColumn(3).setPreferredWidth(120);
+        }
 
         btnCreate.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         btnCreate.setText("New Customer");
@@ -154,6 +168,11 @@ public class CustomerJPanel extends javax.swing.JPanel {
             }
         });
 
+        txtDate.setEnabled(false);
+
+        jLabel7.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel7.setText("Date:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,16 +187,19 @@ public class CustomerJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                            .addComponent(txtFrom)
-                            .addComponent(txtTo)
-                            .addComponent(txtTime)
-                            .addComponent(txtMoney))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                            .addComponent(jLabel7)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel5)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtDate)
+                            .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                            .addComponent(txtFrom, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTo, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTime, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtMoney, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(btnCreate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -214,17 +236,24 @@ public class CustomerJPanel extends javax.swing.JPanel {
                             .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18))
+                            .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)))
+                        .addGap(35, 35, 35)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addComponent(txtMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -235,6 +264,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
         txtFrom.setEnabled(true);
         txtTo.setEnabled(true);
         txtMoney.setEnabled(true);
+        txtDate.setEnabled(true);
         txtTime.setEnabled(true);
         
         btnSave.setEnabled(true);
@@ -268,6 +298,12 @@ public class CustomerJPanel extends javax.swing.JPanel {
             return;
         }
         
+        String date = txtDate.getText();
+        if(date.equals("")) {
+            JOptionPane.showMessageDialog(null, "Enter date");
+            return;
+        }
+        
         int money = 0;
         if(txtMoney.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Enter price");
@@ -281,7 +317,14 @@ public class CustomerJPanel extends javax.swing.JPanel {
             }
         }
         
-        Customer customer = new Customer(name, from, to, time, money);
+        Customer customer = null;
+        try {
+            customer = new Customer(name, from, to, sdf.parse(date) , time, money);
+        } catch (ParseException ex) {
+            Logger.getLogger(CustomerJPanel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Wrong Format with the Date, please: yyyy-mm-dd");
+            return;
+        }
         
         this.travelAgency.addCustomer(customer);
         
@@ -328,8 +371,10 @@ public class CustomerJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblCustomer;
+    private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtFrom;
     private javax.swing.JTextField txtMoney;
     private javax.swing.JTextField txtName;

@@ -6,6 +6,7 @@
 package UserInterface.airliner;
 
 import java.awt.CardLayout;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,6 +29,8 @@ public class DetailAirlinerJPanel extends javax.swing.JPanel {
     TravelAgency travelAgency;
     Airliner airliner;
     JPanel userProcessContainer;
+    
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
     
     public DetailAirlinerJPanel(TravelAgency travelAgency, Airliner airliner, JPanel userProcessContainer) {
         initComponents();
@@ -70,13 +73,14 @@ public class DetailAirlinerJPanel extends javax.swing.JPanel {
         dtm.setRowCount(0);
         
         for(Flight flight : airliner.showAllFlight()) {
-            Object[] row = new Object[6];
+            Object[] row = new Object[7];
             row[0] = flight;
             row[1] = flight.getFromCity();
             row[2] = flight.getToCity();
-            row[3] = flight.getTime();
-            row[4] = flight.getPrice();
-            row[5] = flight.isAvailable() ? "Available" : "Not Available";
+            row[3] = sdf.format(flight.getDate());
+            row[4] = flight.getTime();
+            row[5] = flight.getPrice();
+            row[6] = flight.isAvailable() ? "Available" : "Not Available";
             
             dtm.addRow(row);
         }
@@ -113,18 +117,19 @@ public class DetailAirlinerJPanel extends javax.swing.JPanel {
 
         tblFlight.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Flight", "From", "To", "Time", "Price", "isAvailable"
+                "Flight", "From", "To", "Date", "Time", "Price", "isAvailable"
             }
         ));
         jScrollPane1.setViewportView(tblFlight);
         if (tblFlight.getColumnModel().getColumnCount() > 0) {
             tblFlight.getColumnModel().getColumn(0).setPreferredWidth(150);
+            tblFlight.getColumnModel().getColumn(3).setPreferredWidth(120);
         }
 
         tblAirplane.setModel(new javax.swing.table.DefaultTableModel(
@@ -264,7 +269,7 @@ public class DetailAirlinerJPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(56, 56, 56)
                         .addComponent(jLabel4)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

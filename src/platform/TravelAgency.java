@@ -1,6 +1,8 @@
 package platform;
 
 import buyer.Customer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import seller.Airliner;
 import seller.Airplane;
 import seller.Seat;
@@ -23,9 +25,11 @@ public class TravelAgency {
 
     private Set<String> checkAirLiner;
     
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+    
     Random random = new Random();
 
-    public TravelAgency() {
+    public TravelAgency() throws ParseException {
 
         checkAirLiner = new HashSet<>();
 
@@ -42,11 +46,11 @@ public class TravelAgency {
 
         office = new TravelOffice(this.getAllFlight(this.airlinerList));
         
-        this.addCustomer(new Customer("Jack", "BOS", "LAX", "morning", 10000));
-        this.addCustomer(new Customer("Ruby", "BOS", "LAX", "morning", 90000));
+        this.addCustomer(new Customer("Jack", "BOS", "LAX", sdf.parse("2020-01-01"), "morning", 10000));
+        this.addCustomer(new Customer("Ruby", "BOS", "LAX", sdf.parse("2020-01-01"), "morning", 90000));
         
-        this.addCustomer(new Customer("Mark", "BOS", "LAX", "morning", 30000));
-        this.addCustomer(new Customer("Luke", "BOS", "LAX", "morning", 50000));
+        this.addCustomer(new Customer("Mark", "BOS", "LAX", sdf.parse("2020-01-01"), "morning", 30000));
+        this.addCustomer(new Customer("Luke", "BOS", "LAX", sdf.parse("2020-01-01"), "morning", 50000));
     }
 
     /**
@@ -172,13 +176,20 @@ public class TravelAgency {
         return new Ticket(customer, flight, seat);
     }
     
+    /**
+     * 按照偏好位置订票
+     * @param customer
+     * @param flight
+     * @param position
+     * @return 
+     */
     public Ticket buyTicket(Customer customer, Flight flight, String position) {
         if(position.equals("window")) {
-            return buyTicket(customer, flight, random.nextInt(25), 0);
+            return buyTicket(customer, flight, random.nextInt(25), Math.random() > 0.5 ? 0 : 5);
         } else if(position.equals("middle")) {
-            return buyTicket(customer, flight, random.nextInt(25), 1);
+            return buyTicket(customer, flight, random.nextInt(25), Math.random() > 0.5 ? 1 : 4);
         } else {
-            return buyTicket(customer, flight, random.nextInt(25), 2);
+            return buyTicket(customer, flight, random.nextInt(25), Math.random() > 0.5 ? 2 : 3);
         }
     }
     

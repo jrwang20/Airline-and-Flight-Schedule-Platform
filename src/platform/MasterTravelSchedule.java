@@ -3,6 +3,7 @@ package platform;
 import service.Flight;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,7 +93,7 @@ public class MasterTravelSchedule {
      * @param price
      * @return
      */
-    public List<Flight> multipleFilter(String from, String to, String time, Integer price) {
+    public List<Flight> multipleFilter(String from, String to, Date date, String time, Integer price) {
         List<Flight> res = new ArrayList<>();
         
         for(Flight flight : allFlight) {
@@ -104,7 +105,8 @@ public class MasterTravelSchedule {
             if((from == null || flight.getFromCity().equals(from))
             && (to == null || flight.getToCity().equals(to))
             && (time == null || flight.getTime().equals(time))
-            && (price == null || flight.getPrice() <= price)) {
+            && (price == null || flight.getPrice() <= price)
+            && (date == null || flight.getDate().equals(date))) {
                 res.add(flight);
             }
             

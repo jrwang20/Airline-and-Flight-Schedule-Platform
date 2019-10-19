@@ -2,6 +2,7 @@ package service;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -75,6 +76,7 @@ public class FlightSchedule {
         String fromCity = flight.getFromCity();
         String toCity = flight.getToCity();
         boolean available = flight.isAvailable();
+        Date date = flight.getDate();
         String time = flight.getTime();
         int price = flight.getPrice();
 
@@ -83,6 +85,7 @@ public class FlightSchedule {
                 target.setFromCity(fromCity);
                 target.setToCity(toCity);
                 target.setAvailable(available);
+                target.setDate(date);
                 target.setTime(time);
                 target.setPrice(price);
 

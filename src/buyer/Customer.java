@@ -1,5 +1,7 @@
 package buyer;
 
+import java.util.Date;
+
 
 public class Customer {
 
@@ -7,13 +9,15 @@ public class Customer {
 
     private String fromCity;
     private String toCity;
+    private Date date;
     private String time;
     private int maxPrice;
     
-    public Customer(String customerName, String fromCity, String toCity, String time, int maxPrice) {
+    public Customer(String customerName, String fromCity, String toCity, Date date, String time, int maxPrice) {
         this.customerName = customerName;
         this.fromCity = fromCity;
         this.toCity = toCity;
+        this.date = date;
         this.time = time;
         this.maxPrice = maxPrice;
     }
@@ -80,6 +84,14 @@ public class Customer {
 
     public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
     
     @Override
